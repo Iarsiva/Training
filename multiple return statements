@@ -1,0 +1,9 @@
+def format_name(f_name,l_name):
+    if f_name or l_name == "":
+        return "You didn't provide a valid input"
+    f_name = f_name.title()
+    l_name = l_name.title()
+    return f"{f_name} {l_name}"
+first_name = input("What is your first name:")
+last_name = input("What is your last name:")
+print(format_name(first_name,last_name))

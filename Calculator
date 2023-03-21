@@ -1,0 +1,34 @@
+def add(num1,num2):
+    return num1 + num2
+def substract(num1,num2):
+    return num1 - num2
+def multiply(num1,num2):
+    return num1*num2
+def divide(num1,num2):
+    return num1 / num2
+operations = {
+    "+":add,
+    "-":substract,
+    "*":multiply,
+    "/":divide,
+}
+boolean_dictionary = {
+ "yes" : True,
+ "y" : True,
+ "no":False,
+ "n":False,
+}
+first_number = float(input("What is the first number:?"))
+for operation in operations:
+    print(operation)
+operation = input("What is the operation: +,-,*,/")
+second_number = float(input("What is the second number:?"))
+result = operations[operation](first_number,second_number)
+print(f"Here is the result:{result}")
+keepgoing = True
+while keepgoing == True:
+  operation = input("What is the next operation?: +,-,*,/")
+  next_number = float(input("What is the next number?:"))
+  result = operations[operation](result,next_number)
+  print(f"Here is the result:{result}")
+  keepgoing = boolean_dictionary[input("Do you want to continue?: Yes/No").lower()]

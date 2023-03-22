@@ -1,0 +1,52 @@
+# it may not be the best blackjack program out there, but hey, I made it without any tutorials ;)
+import random
+boollibrary = {
+    'y': True,
+    'n': False,
+}
+
+deck_of_cards = 4*list(range(2, 12))
+print(deck_of_cards)
+inGame = True
+
+index = 0
+while inGame:
+    inRound = True
+    player_hand = []
+    dealer_hand = []
+    p_handsum = 0
+    d_handsum = 0
+    random.shuffle(deck_of_cards)
+    while inRound:
+        if len(player_hand) < 2:
+            player_hand.append(deck_of_cards[index])
+            p_handsum = p_handsum + deck_of_cards[index]
+            index = index + 1
+            dealer_hand.append(deck_of_cards[index])
+            d_handsum = d_handsum + deck_of_cards[index]
+            index = index + 1
+            player_hand.append(deck_of_cards[index])
+            p_handsum = p_handsum + deck_of_cards[index]
+            index = index + 1
+            dealer_hand.append(deck_of_cards[index])
+            d_handsum = d_handsum + deck_of_cards[index]
+            index = index + 1
+        print(f"\n\n\nyour hand:{player_hand}\ndealer's hand:{dealer_hand}")
+        if boollibrary[input("Do you want to continue drawing cards?: y / n")]:
+            player_hand.append(deck_of_cards[index])
+            p_handsum = p_handsum + deck_of_cards[index]
+            index = index + 1
+
+            if p_handsum >= 21:
+                if boollibrary[input("You lose the round, continue? 'y' / 'n' ")]:
+                    inRound = False
+                else:
+                    inGame = False
+
+        elif p_handsum > d_handsum or p_handsum == 21:
+            if boollibrary[input("You win the round, continue? 'y' / 'n' ")]:
+                inRound = False
+            else:
+                inGame = False
+        else:
+            break

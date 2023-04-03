@@ -1,0 +1,110 @@
+# This project is my version of the "Coffee Vending Machine" assignment. I primarily emphasized function decomposition. It thought me good skills. 
+#In future I may optimize this code further.
+
+
+PENNY = 0.01
+NICKEL = 0.05
+DIME = 0.10
+QUARTER = 0.25
+
+
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 180,
+            "milk": 0,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "coffee": 24,
+            "milk": 150,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "coffee": 24,
+            "milk": 100,
+        },
+        "cost": 3.0,
+    },
+}
+
+
+resources = {
+    "water": 300,
+    "coffee": 100,
+    "milk": 200,
+}
+
+
+def change_giver(total_money, coffee):
+    change = total_money - MENU[coffee]["cost"]
+    quarters = round(change % QUARTER)
+    dimes = round((total_money - quarters * QUARTER) % DIME)
+    nickels = round(total_money - (quarters * QUARTER + dimes * DIME) % NICKEL)
+    pennies = round(total_money - (quarters * QUARTER + dimes * DIME + nickels * NICKEL) % PENNY)
+    print(f"{quarters} quarter, {dimes} dimes, {nickels} nickels, {pennies} pennies returned.")
+
+
+def coin_operator(coffee_type):
+    pennies = int(input("How manny pennies?:"))
+    nickels = int(input("How many nickels?:"))
+    dimes = int(input("How many dimes?:"))
+    quarters = int(input("How many quarters?:"))
+    sum = pennies*PENNY + nickels*NICKEL + dimes*DIME + quarters*QUARTER
+    if sum < MENU[coffee_type]["cost"]:
+        print("Not enough money.")
+    else:
+        print("Enough money acquired, until the next update we cannot provide any change.")
+        #change_giver(sum, coffee_type)
+        make_coffee(coffee_type,MENU[coffee_type]["ingredients"])
+
+
+def check_resources(coffee):
+    for ingredient in MENU[coffee]["ingredients"]:
+        if resources[ingredient] < MENU[coffee]["ingredients"][ingredient]:
+            print(f"Sorry,not enough {ingredient}")
+            return 1
+        else:
+            print("There is enough amount of everything")
+            coin_operator(coffee)
+            return 0
+
+
+def maintenance():
+    for item in resources:
+        resources[item] += int(input(f"How much {item} added?:"))
+
+
+def ask_choice():
+    choice = input("What would you like? (espresso, latte, cappuccino):")
+    if choice == "report":
+        for item in resources:
+            print(f"{item.title()}: {resources[item]}")
+    elif choice == "espresso" or choice == "latte" or choice == "cappuccino":
+        check_resources(choice)
+    elif choice == "off":
+        return "off"
+    elif choice == "maintenance":
+        maintenance()
+    else:
+        print("Invalid request.")
+
+
+def make_coffee(coffee_type, order_ingredients):
+    for item in order_ingredients:
+        resources[item] -= order_ingredients[item]
+    print(f"Here is your {coffee_type}: cU, Enjoy")
+
+
+is_on = True
+while is_on:
+    if ask_choice()=="off":
+        is_on = False
+
